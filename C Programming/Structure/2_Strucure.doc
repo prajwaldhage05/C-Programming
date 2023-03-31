@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <string.h>
+
+struct library_book {
+    int id;
+    char title[80];
+    char publisher[20];
+    int code;
+    union {
+        int no_of_copies;
+        char month[10];
+        int edition;
+    } info;
+    int cost;
+};
+
+void displayBook(struct library_book book);
+
+int main() {
+    int n, i, code;
+
+    printf("Enter the number of books: ");
+    scanf("%d", &n);
+
+    struct library_book books[n];
+
+    for (i = 0; i < n; i++) {
+        printf("\nEnter details of book %d:\n", i + 1);
+        printf("ID: ");
+        scanf("%d", &books[i].id);
+
+        printf("Title: ");
+        getchar();
+        fgets(books[i].title, 80, stdin);
+
+        printf("Publisher: ");
+        fgets(books[i].publisher, 20, stdin);
+
+        printf("Code (1 - Text book, 2 - Magazine, 3 - Reference book): ");
+        scanf("%d", &code);
+        books[i].code = code;
+
+        switch (code) {
+            case 1:
+                printf("Number of copies: ");
+                scanf("%d", &books[i].info.no_of_copies);
+                break;
+
+            case 2:
+                printf("Issue month name: ");
+                getchar();
+                fgets(books[i].info.month, 10, stdin);
+                break;
+
+            case 3:
+                printf("Edition number: ");
+                scanf("%d", &books[i].info.edition);
+                break;
+
+            default:
+                printf("Invalid code.\n");
+                break;
+        }
+
+        printf("Cost: ");
+        scanf("%d", &books[i].cost);
+    }
+
+    printf("\nDetails of all books:\n");
+    for (i = 0; i < n; i++) {
+        displayBook(books[i]);
+    }
+
+    return 0;
+}
+
+void displayBook(struct library_book book) {
+    printf("\nID: %d\n", book.id);
+    printf("Title: %s", book.title);
+    printf("Publisher: %s", book.publisher);
+    printf("Code: %d\n", book.code);
+
+    switch (book.code) {
+        case 1:
+            printf("Number of copies: %d\n", book.info.no_of_copies);
+            break;
+
+        case 2:
+            printf("Issue month name: %s", book.info.month);
+            break;
+
+        case 3:
+            printf("Edition number: %d\n", book.info.edition);
+            break;
+
+        default:
+            printf("Invalid code.\n");
+            break;
+    }
+
+    printf("Cost: %d\n", book.cost);
+}
